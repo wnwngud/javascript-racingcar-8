@@ -33,6 +33,17 @@ function strToNum(numRepeats) {
   return Number(numRepeats);
 }
 
+function attemptMoveCars(names, moveCount) {
+  let randomNum, indexOfCarName;
+
+  for (let carName of names) {
+    randomNum = MissionUtils.Random.pickNumberInRange(0, 9);
+    indexOfCarName = names.indexOf(carName);
+
+    if(randomNum >= 4) moveCount[indexOfCarName] += '-';
+  }
+}
+
 class App {
   async run() {
     let inputStr = await MissionUtils.Console.readLineAsync(
@@ -43,7 +54,8 @@ class App {
       "시도할 횟수는 몇 회인가요?\n"
     );
     numRepeats = strToNum(numRepeats);
+
   }
 }
 
-export { App, isValidName, isValidNum };
+export { App, isValidName, isValidNum, attemptMoveCars };

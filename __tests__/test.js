@@ -1,4 +1,5 @@
-import { isValidName, isValidNum } from "../src/App";
+import { isValidName, isValidNum, attemptMoveCars } from "../src/App";
+import { MissionUtils } from "@woowacourse/mission-utils";
 
 // 차량 명 입력 테스트
 describe.each([
@@ -31,4 +32,23 @@ describe.each([
 
     else
         it("반복횟수 양식 검사: 숫자가 아닌 경우", () => { expect(() => isValidNum(inputs)).toThrow("[ERROR] 횟수는 1 이상의 정수만 입력해 주세요."); });
+});
+
+// 차량 전진 테스트
+const mockRandoms = (numbers) => {
+    MissionUtils.Random.pickNumberInRange = jest.fn();
+
+    numbers.reduce((acc, number) => {
+        return acc.mockReturnValueOnce(number);
+    }, MissionUtils.Random.pickNumberInRange);
+};
+
+describe.each([
+    [["pobi", "woni"], ["-", ""], [4, 1]]
+])("attemptMoveCars(%s)", (names, moveCount, randomNum) => {
+    it("차량 전진 테스트", () => {
+        mockRandoms(randomNum);
+        attemptMoveCars(names, moveCount);
+        expect(moveCount).toEqual(["--", ""])
+    });
 });
