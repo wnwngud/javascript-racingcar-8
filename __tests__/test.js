@@ -1,4 +1,4 @@
-import { isValidName, isValidNum, attemptMoveCars } from "../src/App";
+import { isValidName, isValidNum, attemptMoveCars, playCarRacing } from "../src/App";
 import { MissionUtils } from "@woowacourse/mission-utils";
 
 // 차량 명 입력 테스트
@@ -50,5 +50,26 @@ describe.each([
         mockRandoms(randomNum);
         attemptMoveCars(names, moveCount);
         expect(moveCount).toEqual(["--", ""])
+    });
+});
+
+// 게임 결과 출력 테스트
+const getLogSpy = () => {
+    const logSpy = jest.spyOn(MissionUtils.Console, "print");
+    logSpy.mockClear();
+    return logSpy;
+};
+
+describe.each([
+    [["pobi", "woni"], 1, [4, 1]]
+])("playCarRacing(%s)", (names, numRepeats, randomNum) => {
+    it("게임 결과 출력 테스트", () => {
+        let logs = ["실행 결과", "pobi : -", "woni : "]
+        let logSpy = getLogSpy();
+
+        mockRandoms(randomNum);
+        playCarRacing(names, numRepeats);
+
+        logs.forEach((log) => { expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(log)); });
     });
 });

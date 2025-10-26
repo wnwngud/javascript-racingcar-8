@@ -15,6 +15,7 @@ function isValidName(names) {
 function isValidNum(numRepeats) {
   let num = Number(numRepeats);
 
+  // 숫자가 아닌 경우, 공백이 입려된 경우, 음수인 경우, 정수가 아닌 경우 검사
   if (isNaN(num) || numRepeats === "" || num < 1 || !Number.isInteger(num))
     throw new Error("[ERROR] 횟수는 1 이상의 정수만 입력해 주세요.");
 
@@ -40,22 +41,33 @@ function attemptMoveCars(names, moveCount) {
     randomNum = MissionUtils.Random.pickNumberInRange(0, 9);
     indexOfCarName = names.indexOf(carName);
 
-    if(randomNum >= 4) moveCount[indexOfCarName] += '-';
+    if (randomNum >= 4) moveCount[indexOfCarName] += '-';
+    MissionUtils.Console.print(`${carName} : ${moveCount[indexOfCarName]}`);
+  }
+}
+
+function playCarRacing(names, numRepeats) {
+  let num = 0;
+  let moveCount = Array.from({ length: names.length }, () => "");
+
+  MissionUtils.Console.print("\n실행 결과")
+  while (num < numRepeats) {
+    attemptMoveCars(names, moveCount);
+    num++;
+    MissionUtils.Console.print("")
   }
 }
 
 class App {
   async run() {
-    let inputStr = await MissionUtils.Console.readLineAsync(
-      "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)\n"
-    );
+    let inputStr = await MissionUtils.Console.readLineAsync("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)\n");
     let names = extractNames(inputStr);
-    let numRepeats = await MissionUtils.Console.readLineAsync(
-      "시도할 횟수는 몇 회인가요?\n"
-    );
+    let numRepeats = await MissionUtils.Console.readLineAsync("시도할 횟수는 몇 회인가요?\n");
+
     numRepeats = strToNum(numRepeats);
 
+    playCarRacing(names, numRepeats);
   }
 }
 
-export { App, isValidName, isValidNum, attemptMoveCars };
+export { App, isValidName, isValidNum, attemptMoveCars, playCarRacing };

@@ -58,3 +58,4 @@ describe("자동차 경주", () => {
     await expect(app.run()).rejects.toThrow("[ERROR]");
   });
 });
+
