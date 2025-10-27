@@ -1,4 +1,4 @@
-import { isValidName, isValidNum, attemptMoveCars, playCarRacing, finalWinner } from "../src/App";
+import { isValidName, isValidNum, attemptMoveCars, playCarRacing, finalWinner } from "./App";
 import { MissionUtils } from "@woowacourse/mission-utils";
 
 // 차량 명 입력 테스트
