@@ -56,18 +56,36 @@ function playCarRacing(names, numRepeats) {
     num++;
     MissionUtils.Console.print("")
   }
+
+  return finalWinner(names, moveCount);
+}
+
+function finalWinner(names, moveCount) {
+  let maxLen = 0;
+  let winner = [];
+
+  for (let i = 0; i < moveCount.length; i++) {
+    if (maxLen < moveCount[i].length) maxLen = moveCount[i].length;
+  }
+
+  for (let i = 0; i < names.length; i++) {
+    if (maxLen === moveCount[i].length) winner.push(names[i]);
+  }
+
+  return winner;
 }
 
 class App {
   async run() {
     let inputStr = await MissionUtils.Console.readLineAsync("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)\n");
     let names = extractNames(inputStr);
-    let numRepeats = await MissionUtils.Console.readLineAsync("시도할 횟수는 몇 회인가요?\n");
 
+    let numRepeats = await MissionUtils.Console.readLineAsync("시도할 횟수는 몇 회인가요?\n");
     numRepeats = strToNum(numRepeats);
 
-    playCarRacing(names, numRepeats);
+    let winner = playCarRacing(names, numRepeats);
+    MissionUtils.Console.print(`최종 우승자 : ${winner.join(', ')}`)
   }
 }
 
-export { App, isValidName, isValidNum, attemptMoveCars, playCarRacing };
+export { App, isValidName, isValidNum, attemptMoveCars, playCarRacing, finalWinner };

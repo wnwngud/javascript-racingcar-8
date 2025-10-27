@@ -1,4 +1,4 @@
-import { isValidName, isValidNum, attemptMoveCars, playCarRacing } from "../src/App";
+import { isValidName, isValidNum, attemptMoveCars, playCarRacing, finalWinner } from "../src/App";
 import { MissionUtils } from "@woowacourse/mission-utils";
 
 // 차량 명 입력 테스트
@@ -73,3 +73,15 @@ describe.each([
         logs.forEach((log) => { expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(log)); });
     });
 });
+
+// 최종 우승자 출력 테스트
+describe.each([
+    [["pobi", "woni", "jun"], ['---', '-', '-'], 0],
+    [["pobi", "woni", "jun"], ['---', '--', '---'], 1]
+])("finalWinner(%s, %s)", (names, moveCount, caseNumber) => {
+    if (caseNumber === 0)
+        it("최종 우승자 출력 테스트: 우승자 1명의 경우", () => { expect(finalWinner(names, moveCount)).toEqual(["pobi"]); });
+
+    else
+        it("최종 우승자 출력 테스트: 우승자 2명 이상의 경우", () => { expect(finalWinner(names, moveCount)).toEqual(["pobi", "jun"]); });
+})
